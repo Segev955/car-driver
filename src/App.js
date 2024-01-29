@@ -2,14 +2,22 @@ import './App.css';
 import * as React from "react";
 import NavBar from './NavBar';
 import Driver from './Driver';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Drivers from './Drivers';
+import NewDriver from './NewDriver';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
       <NavBar />
       <div className='content'>
-        <Driver />
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Drivers />} />
+            <Route path='/add' element={<NewDriver />} />
+            <Route path='/segevtzabar' element={<Driver />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     </div>
   );

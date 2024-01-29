@@ -1,0 +1,47 @@
+.NewDriver {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .NewDriver label {
+    text-align: left;
+    display: block;
+  }
+  .NewDriver h2 {
+    font-size: 20px;
+    color: #f1356d;
+    margin-bottom: 30px;
+  }
+  .NewDriver input, .NewDriver textarea, .NewDriver select {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+  }
+  .NewDriver button {
+    background: #f1356d;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .datePickerContainer {
+    display: flex;
+    align-items: center;
+  }
+
+  .ageParagraph {
+    margin-left: 10px; /* Adjust the margin as needed */
+  }
+
+  
+  .react-datepicker__year-dropdown::after {
+    content: "\25BC";
+    display: block;
+    position: relative;
+    bottom: 15%;
+  }

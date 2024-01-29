@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useTable } from "react-table";
-import fakeData from "./data.json";
+import fakeData from "./data/data.json";
 
 function Driver() {
     const data = React.useMemo(() => fakeData, [])
