@@ -1,9 +1,10 @@
 # Getting Started
 
-npm install
-npm install react
-npm install react-router-dom
-npm install react-table
+npm install \
+npm install react \
+npm install react-router-dom \
+npm install react-table \
+npm install react-datepicker \
 
 ## Available Scripts
 
