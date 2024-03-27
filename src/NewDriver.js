@@ -2,14 +2,17 @@ import './NewDriver.css';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { useNavigate } from 'react-router-dom'
 
 const NewDriver = () => {
-    const [name, setName] = useState('');
+    const [fullName, setName] = useState('');
     const [gender, setGender] = useState('');
     const [age, setAge] = useState('');
     const [birthDate, setBirthDate] = useState(null);
     const [carType, setCarType] = useState('');
     const [carYear, setCarYear] = useState('');
+    const [isPending, setIsPending] = useState(false);
+    const navigate = useNavigate();
 
     const calculateAge = (birthdate) => {
         if (!birthdate) return null;
@@ -24,22 +27,38 @@ const NewDriver = () => {
         }
     
         return age;
-      };
+    };
 
       const handleDateChange = (date) => {
         setBirthDate(date);
         setAge(calculateAge(date));
-      };
+    };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const driver = {fullName, gender, age, carType, carYear};
+        setIsPending(true);
+        
+        fetch('http://localhost:8000/drivers', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(driver)
+        }).then(() => {
+            console.log("New driver added!")
+            setIsPending(false);
+            navigate('/')
+        })
+    }
+    
     return (
         <div className="NewDriver">
             <h2>Add a New Driver</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label>Full Name:</label>
                 <input
                     type="text"
                     required
-                    value={name}
+                    value={fullName}
                     onChange={(e) => setName(e.target.value)}
                 />
                 <label>Gender:</label>
@@ -79,7 +98,8 @@ const NewDriver = () => {
                     value={carYear}
                     onChange={(e) => setCarYear(e.target.value)}
                 />
-                <button>Add New Driver</button>
+                {!isPending && <button>Add New Driver</button>}
+                {isPending && <button>Adding Driver...</button>}
             </form>
         </div>
     );
