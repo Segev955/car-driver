@@ -1,0 +1,13 @@
+{
+  "type": "commonjs",
+  "scripts": {
+    "start": "node --experimental-modules main.js", 
+    "dev": "nodemon --experimental-modules main.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "firebase": "^8.10.0",
+    "nodemon": "^3.1.0"
+  }
+}
