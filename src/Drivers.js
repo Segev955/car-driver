@@ -1,81 +1,99 @@
-import * as React from "react";
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import { useTable } from "react-table";
+import { database } from "./firebase"; // Adjust the path if necessary
+import { ref, onValue } from "firebase/database";
+import { useNavigate } from "react-router-dom";
+
 
 const Drivers = () => {
-    const [drivers, setDrivers] = useState(null);
-    
-    const [columns] = useState([
-        {
-            Header: "Full Name",
-            accessor: "fullName",
-        },
-        {
-            Header: "Age",
-            accessor: "age",
-        },
-        {
-            Header: "Car Type",
-            accessor: "carType",
-        },
-        {
-            Header: "Car Year",
-            accessor: "carYear",
-        },
-    ]);
+  const [drivers, setDrivers] = useState([]);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        fetch('http://localhost:8000/drivers')
-        .then(res => res.json())
-        .then(data => {
-            setDrivers(data);
-        })
-    }, [])
+  const [columns] = useState([
+    {
+      Header: "Full Name",
+      accessor: "fullName",
+    },
+    {
+      Header: "Date",
+      accessor: "date",
+    },
+    {
+      Header: "Car Type",
+      accessor: "carType",
+    },
+    {
+      Header: "Email",
+      accessor: "email",
+    },
+    {
+       Header: "Gender",
+       accessor: "gender",
+    },
+    {
+       Header: "Status",
+       accessor: "status",
+    },
+  ]);
 
-    // Call useTable unconditionally at the top level of your component
-    const tableInstance = useTable({ columns, data: drivers || [] });
+  useEffect(() => {
+    const fetchData = () => {
+      const usersRef = ref(database, 'Users');
+      onValue(usersRef, (snapshot) => {
+        const data = snapshot.val();
+        const driversList = Object.keys(data).map(key => ({ ...data[key], id: key }));
+        setDrivers(driversList);
+      });
+    };
 
-    if (!drivers) {
-        return null;
-    }
+    fetchData();
+  }, []);
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = tableInstance;
+  const tableInstance = useTable({ columns, data: drivers });
 
-    return (
-        <div className="container">
-            <table {...getTableProps()}>
-                <thead>
-                {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((column) => (
-                        <th {...column.getHeaderProps()}>
-                        {column.render("Header")}
-                        </th>
-                    ))}
-                    </tr>
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = tableInstance;
+
+  const handleRowClick = (id) => {
+    navigate(`/driver/${id}`);
+  };
+
+  return (
+    <div className="container">
+      <table {...getTableProps()}>
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr
+                {...row.getRowProps()}
+                onClick={() => handleRowClick(row.original.id)}
+                style={{ cursor: "pointer" }}
+              >
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                 ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                {rows.map((row) => {
-                    prepareRow(row);
-                    return (
-                    <tr {...row.getRowProps()}>
-                        {row.cells.map((cell) => (
-                        <td {...cell.getCellProps()}> {cell.render("Cell")} </td>
-                        ))}
-                    </tr>
-                    );
-                })}
-                </tbody>
-            </table>
-        </div>
-    );
-}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 export default Drivers;

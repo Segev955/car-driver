@@ -6,48 +6,36 @@ function Driver() {
     const data = React.useMemo(() => fakeData, [])
     const columns = React.useMemo(() => [
         {
-        Header: "Time Stamp",
-        accessor: "timestamp",
+        Header: "Date & Time",
+        accessor: "datetime",
         },
         {
         Header: "Vehicle Speed",
         accessor: "vehicleSpeed",
         },
         {
-        Header: "Engine RPM",
-        accessor: "engineRPM",
+        Header: "Temperature",
+        accessor: "temperature",
         },
         {
         Header: "Throttle Position",
-        accessor: "throttlePosition",
+        accessor: "throttle",
         },
         {
         Header: "Fuel Level",
-        accessor: "fuelLevel",
+        accessor: "fuel",
         },
         {
         Header: "Coolant Temperature",
         accessor: "coolantTemperature",
         },
         {
-        Header: "Odometer Reading",
-        accessor: "odometerReading",
+        Header: "Acceleration",
+        accessor: "acceleration",
         },
         {
-        Header: "Brake Status",
-        accessor: "brakeStatus",
-        },
-        {
-        Header: "Gear Position",
-        accessor: "gearPosition",
-        },
-        {
-        Header: "Accelerator Position",
-        accessor: "acceleratorPosition",
-        },
-        {
-        Header: "VIN",
-        accessor: "VIN",
+        Header: "Speed Limit",
+        accessor: "speedLimit",
         },
     ],
   []

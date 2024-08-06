@@ -15,7 +15,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Drivers />} />
             <Route path='/add' element={<NewDriver />} />
-            <Route path='/segevtzabar' element={<Driver />} />
+            <Route path='/driver/:id' element={<Driver />} />
           </Routes>
         </BrowserRouter>
       </div>
