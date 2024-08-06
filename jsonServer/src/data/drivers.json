@@ -1,0 +1,70 @@
+{
+  "drivers": [
+    {
+      "fullName": "Segev Tzabar",
+      "age": 28,
+      "carType": "SEAT Ibiza",
+      "carYear": "2017"
+    },
+    {
+      "fullName": "Sali Sharfman",
+      "age": 25,
+      "carType": "Mazda 2",
+      "carYear": "2010"
+    },
+    {
+      "fullName": "Yasmin Cohen",
+      "age": 20,
+      "carType": "Honda jazz",
+      "carYear": "2018"
+    },
+    {
+      "fullName": "David Levy",
+      "age": 28,
+      "carType": "Toyota Corolla",
+      "carYear": "2015"
+    },
+    {
+      "fullName": "Liora Cohen",
+      "age": 32,
+      "carType": "Ford Focus",
+      "carYear": "2017"
+    },
+    {
+      "fullName": "Avi Rosenberg",
+      "age": 22,
+      "carType": "Nissan Sentra",
+      "carYear": "2013"
+    },
+    {
+      "fullName": "Maya Cohen",
+      "age": 27,
+      "carType": "Chevrolet Cruze",
+      "carYear": "2016"
+    },
+    {
+      "id": "3552",
+      "fullName": "Moshe Cohen",
+      "gender": "Male",
+      "age": 24,
+      "carType": "SEAT",
+      "carYear": "2015"
+    },
+    {
+      "id": "a305",
+      "fullName": "Moshe Cohen",
+      "gender": "Male",
+      "age": 24,
+      "carType": "SEAT",
+      "carYear": "2015"
+    },
+    {
+      "id": "576c",
+      "fullName": "New Driver",
+      "gender": "Male",
+      "age": 0,
+      "carType": "SRAYT",
+      "carYear": "1231"
+    }
+  ]
+}
