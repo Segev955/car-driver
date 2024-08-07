@@ -1,74 +1,72 @@
-import * as React from "react";
-import { useTable } from "react-table";
-import fakeData from "./data/data.json";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { storage, database } from "./firebase";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { ref as dbRef, get } from "firebase/database";
 
 function Driver() {
-    const data = React.useMemo(() => fakeData, [])
-    const columns = React.useMemo(() => [
-        {
-        Header: "Date & Time",
-        accessor: "datetime",
-        },
-        {
-        Header: "Vehicle Speed",
-        accessor: "vehicleSpeed",
-        },
-        {
-        Header: "Temperature",
-        accessor: "temperature",
-        },
-        {
-        Header: "Throttle Position",
-        accessor: "throttle",
-        },
-        {
-        Header: "Fuel Level",
-        accessor: "fuel",
-        },
-        {
-        Header: "Coolant Temperature",
-        accessor: "coolantTemperature",
-        },
-        {
-        Header: "Acceleration",
-        accessor: "acceleration",
-        },
-        {
-        Header: "Speed Limit",
-        accessor: "speedLimit",
-        },
-    ],
-  []
-);
+  const { id } = useParams(); // Get the driver ID from the URL
+  const [fileList, setFileList] = useState([]);
+  const [username, setUsername] = useState("");
 
-const {getTableProps, getTableBodyProps, headerGroups, rows, prepareRow} = useTable({columns, data});
-return (
-<div className="container">
-    <table {...getTableProps()}>
-        <thead>
-        {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>
-                {column.render("Header")}
-                </th>
-            ))}
-            </tr>
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        // Reference to the user's data in Firebase Realtime Database
+        const userRef = dbRef(database, `Users/${id}/fullName`);
+        const snapshot = await get(userRef);
+
+        if (snapshot.exists()) {
+          setUsername(snapshot.val());
+        } else {
+          console.log("No data available for user");
+        }
+      } catch (error) {
+        console.error("Error fetching username:", error);
+      }
+    };
+
+    const fetchFileList = async () => {
+      try {
+        // Reference to the driver's directory in Firebase Storage
+        const filesRef = ref(storage, `drives/${id}`);
+
+        // List all files in the directory
+        const fileListResult = await listAll(filesRef);
+
+        // Get download URLs for each file
+        const fileDetails = await Promise.all(
+          fileListResult.items.map(async (item) => {
+            const url = await getDownloadURL(item);
+            return {
+              name: item.name,
+              url,
+            };
+          })
+        );
+
+        setFileList(fileDetails);
+      } catch (error) {
+        console.error("Error fetching file list:", error);
+      }
+    };
+
+    fetchUsername();
+    fetchFileList();
+  }, [id]);
+
+  return (
+    <div className="container mt-5">
+      <h2 className="text-center mb-4">Files for {username}</h2>
+      <ul className="list-group">
+        {fileList.map((file) => (
+          <li className="list-group-item" key={file.name}>
+            <a href={file.url} target="_blank" rel="noopener noreferrer">
+              {file.name}
+            </a>
+          </li>
         ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-            prepareRow(row);
-            return (
-            <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                <td {...cell.getCellProps()}> {cell.render("Cell")} </td>
-                ))}
-            </tr>
-            );
-        })}
-        </tbody>
-    </table>
+      </ul>
     </div>
   );
 }
