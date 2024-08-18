@@ -3,6 +3,7 @@ import { useTable } from "react-table";
 import { database } from "./firebase"; 
 import { ref, onValue } from "firebase/database";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Drivers = () => {
   const [drivers, setDrivers] = useState([]);
@@ -35,6 +36,28 @@ const Drivers = () => {
     },
   ]);
 
+
+  const sendNotification = async (fcmToken, title, body) => {
+    const message = {
+      token: fcmToken,
+      title: title,
+      body: body,
+    };
+  
+    try {
+      await axios.post("http://localhost:3000/send-notification", message, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      alert("Notification sent successfully!");
+    } catch (error) {
+      console.error("Error sending notification", error);
+    }
+  };
+
+
+
   useEffect(() => {
     const fetchData = () => {
       const usersRef = ref(database, 'Users');
@@ -48,6 +71,7 @@ const Drivers = () => {
     fetchData();
   }, []);
 
+
   const tableInstance = useTable({ columns, data: drivers });
 
   const {
@@ -58,9 +82,26 @@ const Drivers = () => {
     prepareRow,
   } = tableInstance;
 
+  // const handleRowClick = (id) => {
+  //   navigate(`/driver/${id}`);
+  // };
+
+  // Example: calling the function after selecting a user
   const handleRowClick = (id) => {
+    const selectedDriver = drivers.find(driver => driver.id === id);
+
+    if (selectedDriver && selectedDriver.fcmtoken) {
+      sendNotification(
+        selectedDriver.fcmtoken, 
+        "Your car on road", 
+        "Please check your car"
+      );
+    } else {
+      alert("FCM Token not available for this user");
+    }
     navigate(`/driver/${id}`);
   };
+
 
   return (
     <div className="container mt">
