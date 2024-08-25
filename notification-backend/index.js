@@ -3,17 +3,11 @@ const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
 const cors = require("cors");
 
-// Conditionally load dotenv only in development
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-// Check if the environment variable exists
-if (!process.env.GOOGLE_CLOUD_CREDENTIALS) {
-  throw new Error("GOOGLE_CLOUD_CREDENTIALS environment variable is missing!");
-}
-
-// Parse the environment variable (it should be a JSON string)
+// Load credentials from environment variables
 const serviceAccount = JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS);
 
 admin.initializeApp({
@@ -46,7 +40,10 @@ app.post("/send-notification", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Only bind to a port in local development
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
