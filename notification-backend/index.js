@@ -1,11 +1,16 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
-const cors = require("cors"); // Import the cors package
+const cors = require("cors");
+require('dotenv').config(); // Load environment variables from .env
 
+// Check if the environment variable exists
+if (!process.env.GOOGLE_CLOUD_CREDENTIALS) {
+  throw new Error("GOOGLE_CLOUD_CREDENTIALS environment variable is missing!");
+}
 
-// Load your service account key JSON file
-const serviceAccount = require("./car-driver.json");
+// Parse the environment variable (it should be a JSON string)
+const serviceAccount = JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -13,7 +18,7 @@ admin.initializeApp({
 });
 
 const app = express();
-app.use(cors()); 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.post("/send-notification", async (req, res) => {
