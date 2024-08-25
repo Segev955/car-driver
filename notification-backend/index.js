@@ -5,7 +5,7 @@ const cors = require("cors"); // Import the cors package
 
 
 // Load your service account key JSON file
-const serviceAccount = require("./car-driver-bc91f-firebase-adminsdk-xhkyn-214c09b623.json");
+const serviceAccount = require("./car-driver.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
