@@ -2,7 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
 const cors = require("cors");
-require('dotenv').config(); // Load environment variables from .env
+
+// Conditionally load dotenv only in development
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 // Check if the environment variable exists
 if (!process.env.GOOGLE_CLOUD_CREDENTIALS) {
