@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
 const cors = require("cors");
 
-// Conditionally load dotenv for local dev
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -41,4 +40,10 @@ app.post("/send-notification", async (req, res) => {
   }
 });
 
-module.exports = app;
+// Only bind to a port in local development
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
