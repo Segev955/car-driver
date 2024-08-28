@@ -1,6 +1,6 @@
 # CarDriver
 
-CarDriver is part of a comprehensive solution aimed at detecting vehicle theft by analyzing driver behavior. This project involves a web application and backend that work alongside an Android app to interact with real-time data, helping to identify drivers and detect potential car theft.
+CarDriver is part of a comprehensive solution to detect vehicle theft by analyzing driver behavior. This project involves a web application and backend that work alongside an Android app to interact with real-time data, helping to identify drivers and detect potential car theft.
 
 ## Features
 
@@ -52,3 +52,4 @@ CarDriver is part of a comprehensive solution aimed at detecting vehicle theft b
 
 - **Segev Tzabar**
 - **Yasmin Cohen**
+- **Sali Sharfman**
